@@ -1,0 +1,17 @@
+node_modules/
+dist/
+target/
+.tools/
+.finesse/
+.taste-skill/
+.DS_Store
+*.log
+artifacts/
+src-tauri/helpers/bin/
+build/
+native/helpers/shizi-ocr
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+compliance/qt-source/*.tar.xz

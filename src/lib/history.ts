@@ -1,0 +1,6 @@
+import type {CaptureDocument} from './types';
+const DB='shizi-snip';
+function open(){return new Promise<IDBDatabase>((resolve,reject)=>{const req=indexedDB.open(DB,1);req.onupgradeneeded=()=>req.result.createObjectStore('captures',{keyPath:'id'});req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+export async function readHistory(){const db=await open();return new Promise<CaptureDocument[]>((resolve,reject)=>{const tx=db.transaction('captures');const req=tx.objectStore('captures').getAll();req.onsuccess=()=>resolve(req.result.sort((a:CaptureDocument,b:CaptureDocument)=>b.createdAt-a.createdAt));req.onerror=()=>reject(req.error);tx.oncomplete=()=>db.close();});}
+export async function putCapture(doc:CaptureDocument){if(doc.sample)return;const db=await open();return new Promise<void>((resolve,reject)=>{const tx=db.transaction('captures','readwrite');tx.objectStore('captures').put(doc);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};});}
+export async function removeCapture(id:string){const db=await open();return new Promise<void>((resolve,reject)=>{const tx=db.transaction('captures','readwrite');tx.objectStore('captures').delete(id);tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>reject(tx.error);});}

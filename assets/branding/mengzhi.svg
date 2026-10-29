@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="none">
+  <title>萌知 · Capture a new idea</title>
+  <desc>A fresh sprout inside four screenshot corners, on a midnight teal app tile.</desc>
+  <defs>
+    <linearGradient id="tile" x1="140" y1="90" x2="870" y2="940" gradientUnits="userSpaceOnUse"><stop stop-color="#163C55"/><stop offset=".48" stop-color="#0E2A42"/><stop offset="1" stop-color="#091A2C"/></linearGradient>
+    <radialGradient id="light" cx="300" cy="170" r="660" gradientUnits="userSpaceOnUse"><stop stop-color="#3EE7C8" stop-opacity=".21"/><stop offset="1" stop-color="#3EE7C8" stop-opacity="0"/></radialGradient>
+    <linearGradient id="left" x1="351" y1="401" x2="515" y2="555" gradientUnits="userSpaceOnUse"><stop stop-color="#62DDC3"/><stop offset="1" stop-color="#B1F6DB"/></linearGradient>
+    <linearGradient id="right" x1="681" y1="322" x2="509" y2="488" gradientUnits="userSpaceOnUse"><stop stop-color="#C7FFE6"/><stop offset="1" stop-color="#63DFC7"/></linearGradient>
+  </defs>
+  <rect x="64" y="64" width="896" height="896" rx="202" fill="url(#tile)"/>
+  <rect x="64" y="64" width="896" height="896" rx="202" fill="url(#light)"/>
+  <rect x="66" y="66" width="892" height="892" rx="200" stroke="#CEF7FC" stroke-opacity=".17" stroke-width="3"/>
+  <path d="M393 255H289Q255 255 255 289V393 M631 255H735Q769 255 769 289V393 M769 631V735Q769 769 735 769H631 M393 769H289Q255 769 255 735V631" stroke="#F4FBFF" stroke-width="43" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M507 681V516C507 478 523 449 547 426" stroke="#9DF3DE" stroke-width="38" stroke-linecap="round"/>
+  <path d="M507 560C398 560 347 487 347 398C447 398 514 449 507 560Z" fill="url(#left)"/>
+  <path d="M507 488C505 378 587 320 687 320C687 426 613 488 507 488Z" fill="url(#right)"/>
+</svg>

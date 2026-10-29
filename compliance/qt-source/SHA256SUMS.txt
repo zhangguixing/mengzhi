@@ -1,0 +1,1 @@
+3133eb869aa77c6a82b5bfc1390013717c27b8dc11f18795c32f4b73c59b5c66  compliance/qt-source/qtbase-everywhere-src-6.8.3.tar.xz
