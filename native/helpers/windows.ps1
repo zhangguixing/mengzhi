@@ -1,4 +1,4 @@
-param([ValidateSet('capture','ocr')][string]$Mode,[string]$Path)
+﻿param([ValidateSet('capture','ocr')][string]$Mode,[string]$Path)
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 try {
@@ -48,8 +48,8 @@ public class SnipSelector : Form {
     $method=[System.WindowsRuntimeSystemExtensions].GetMethods() | Where-Object {$_.Name -eq 'AsTask' -and $_.IsGenericMethod -and $_.GetParameters().Count -eq 1 -and $_.GetParameters()[0].ParameterType.Name -eq 'IAsyncOperation`1'} | Select-Object -First 1
     $task=$method.MakeGenericMethod($type).Invoke($null,@($op));$task.GetAwaiter().GetResult()
   }
-  $file=Await ([Windows.Storage.StorageFile]::GetFileFromPathAsync($Path)) ([Windows.Storage.StorageFile])
-  $stream=Await ($file.OpenAsync([Windows.Storage.FileAccessMode]::Read)) ([Windows.Storage.Streams.IRandomAccessStream])
+  $file=[System.IO.File]::OpenRead($Path)
+  $stream=[System.IO.WindowsRuntimeStreamExtensions]::AsRandomAccessStream($file)
   $decoder=Await ([Windows.Graphics.Imaging.BitmapDecoder]::CreateAsync($stream)) ([Windows.Graphics.Imaging.BitmapDecoder])
   $bitmap=Await ($decoder.GetSoftwareBitmapAsync()) ([Windows.Graphics.Imaging.SoftwareBitmap])
   $engine=[Windows.Media.Ocr.OcrEngine]::TryCreateFromUserProfileLanguages()
@@ -57,6 +57,6 @@ public class SnipSelector : Form {
   if($bitmap.PixelWidth -gt [Windows.Media.Ocr.OcrEngine]::MaxImageDimension -or $bitmap.PixelHeight -gt [Windows.Media.Ocr.OcrEngine]::MaxImageDimension){throw '图片尺寸超过系统 OCR 限制，请缩小后识别。'}
   $result=Await ($engine.RecognizeAsync($bitmap)) ([Windows.Media.Ocr.OcrResult])
   $blocks=@(foreach($line in $result.Lines){foreach($word in $line.Words){$b=$word.BoundingRect;@{text=$word.Text;x=$b.X/$bitmap.PixelWidth;y=$b.Y/$bitmap.PixelHeight;width=$b.Width/$bitmap.PixelWidth;height=$b.Height/$bitmap.PixelHeight;confidence=$null}}})
-  @{blocks=$blocks;text=$result.Text;engine='Windows OCR'} | ConvertTo-Json -Depth 5 -Compress
-  $bitmap.Dispose();$stream.Dispose()
+  @{blocks=$blocks;text=(($result.Lines | ForEach-Object { $_.Text }) -join [Environment]::NewLine);engine='Windows OCR';language=$engine.RecognizerLanguage.LanguageTag} | ConvertTo-Json -Depth 5 -Compress
+  $bitmap.Dispose();$stream.Dispose();$file.Dispose()
 } catch { [Console]::Error.Write($_.Exception.Message); exit 1 }

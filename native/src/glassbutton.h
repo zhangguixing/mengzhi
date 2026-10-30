@@ -21,7 +21,7 @@ protected:
  void mousePressEvent(QMouseEvent* e)override{animate(.2);Base::mousePressEvent(e);}
  void mouseReleaseEvent(QMouseEvent* e)override{Base::mouseReleaseEvent(e);animate(this->underMouse()?1:0);}
  void paintEvent(QPaintEvent* e)override{
-  Base::paintEvent(e);if(!this->isEnabled()||light<=0)return;
+  Base::paintEvent(e);if(this->window()->property("uiStudy").isValid()||!this->isEnabled()||light<=0)return;
   QPainter p(this);p.setRenderHint(QPainter::Antialiasing);QPainterPath clip;clip.addRoundedRect(QRectF(this->rect()).adjusted(1,1,-1,-1),qMin(17,this->height()/2),qMin(17,this->height()/2));p.setClipPath(clip);
   QLinearGradient shine(0,0,0,this->height());shine.setColorAt(0,QColor(255,255,255,qRound(24*light)));shine.setColorAt(1,QColor(255,255,255,0));p.fillRect(this->rect(),shine);
  }
